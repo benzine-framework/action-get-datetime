@@ -13,8 +13,7 @@ runs:
           echo "time=$(date +'%H:%M:%S')"
           echo "atom=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           echo "atom_with_millis=$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ')"
-        } >> "$GITHUB_OUTPUT"
-
+        } | tee -a "$GITHUB_OUTPUT" >> "$GITHUB_ENV"
 outputs:
   datetime:
     description: "Current date and time in 'YYYY-MM-DD HH:MM:SS' format"
