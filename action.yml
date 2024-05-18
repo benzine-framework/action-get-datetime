@@ -7,7 +7,8 @@ branding:
 runs:
   using: "composite"
   steps:
-    - id: date
+    - name: "Export Date and Time"
+      id: date
       shell: bash
       run: |
         for var in datetime date time atom atom_with_millis; do
