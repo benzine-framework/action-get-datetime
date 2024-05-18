@@ -1,0 +1,33 @@
+name: "Get DateTime"
+description: "Get the current date and time in a specific format."
+
+runs:
+  using: "composite"
+  steps:
+    - id: date
+      shell: bash
+      run: |
+        {
+          echo "datetime=$(date +'%Y-%m-%d %H:%M:%S')"
+          echo "date=$(date +'%Y-%m-%d')"
+          echo "time=$(date +'%H:%M:%S')"
+          echo "atom=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "atom_with_millis=$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ')"
+        } >> "$GITHUB_OUTPUT"
+
+outputs:
+  datetime:
+    description: "Current date and time in 'YYYY-MM-DD HH:MM:SS' format"
+    value: ${{ steps.date.outputs.datetime }}
+  date:
+    description: "Current date in 'YYYY-MM-DD' format"
+    value: ${{ steps.date.outputs.date }}
+  time:
+    description: "Current time in 'HH:MM:SS' format"
+    value: ${{ steps.date.outputs.time }}
+  atom:
+    description: "Current date and time in 'YYYY-MM-DDTHH:MM:SSZ' format"
+    value: ${{ steps.date.outputs.atom }}
+  atom_with_millis:
+    description: "Current date and time in 'YYYY-MM-DDTHH:MM:SS.SSSZ' format"
+    value: ${{ steps.date.outputs.atom_with_millis }}
