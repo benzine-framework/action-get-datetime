@@ -1,5 +1,8 @@
 name: "Get DateTime"
 description: "Get the current date and time in a specific format."
+branding:
+  color: "orange"
+  icon: "clock"
 
 runs:
   using: "composite"
@@ -7,13 +10,18 @@ runs:
     - id: date
       shell: bash
       run: |
-        {
-          echo "datetime=$(date +'%Y-%m-%d %H:%M:%S')"
-          echo "date=$(date +'%Y-%m-%d')"
-          echo "time=$(date +'%H:%M:%S')"
-          echo "atom=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          echo "atom_with_millis=$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ')"
-        } | tee -a "$GITHUB_OUTPUT" >> "$GITHUB_ENV"
+        for var in datetime date time atom atom_with_millis; do
+          value=$(date +'%Y-%m-%d %H:%M:%S')
+          case $var in
+            datetime) value=$(date +'%Y-%m-%d %H:%M:%S') ;;
+            date) value=$(date +'%Y-%m-%d') ;;
+            time) value=$(date +'%H:%M:%S') ;;
+            atom) value=$(date -u +'%Y-%m-%dT%H:%M:%SZ') ;;
+            atom_with_millis) value=$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ') ;;
+          esac
+          echo "$var=$value" | tee -a "$GITHUB_OUTPUT"
+          echo "${var^^}=$value" >> "$GITHUB_ENV"
+        done
 outputs:
   datetime:
     description: "Current date and time in 'YYYY-MM-DD HH:MM:SS' format"
