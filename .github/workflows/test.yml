@@ -1,0 +1,57 @@
+name: Test
+
+permissions: read-all
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test-from-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.
+      - name: Verify Date
+        run: |
+          echo "DATE: $DATE"
+          echo "TODAY: $(date +'%Y-%m-%d')"
+          if [ "$DATE" != "$(date +'%Y-%m-%d')" ]; then
+              echo "DATE is not today's date"
+              exit 1
+          fi
+      - name: Verify TIME within 10 seconds of now
+        run: |
+          echo "TIME: $TIME"
+          echo "NOW: $(date +'%H:%M:%S')"
+          if [ $(date -d "$TIME" +%s) -lt $(date -d "now - 10 seconds" +%s) ] || [ $(date -d "$TIME" +%s) -gt $(date -d "now + 10 seconds" +%s) ]; then
+              echo "TIME is not within 10 seconds of now"
+              exit 1
+          fi
+
+  test-from-output:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: date
+        uses: ./.
+      - name: Verify Date
+        run: |
+          echo "DATE: ${{ steps.date.outputs.date }}"
+          echo "TODAY: $(date +'%Y-%m-%d')"
+          if [ "${{ steps.date.outputs.date }}" != "$(date +'%Y-%m-%d')" ]; then
+              echo "DATE is not today's date"
+              exit 1
+          fi
+      # Verify that date.time is within 10 seconds of now.
+      - name: Verify TIME within 10 seconds of now
+        run: |
+          echo "TIME: ${{ steps.date.outputs.time }}"
+          echo "NOW: $(date +'%H:%M:%S')"
+          if [ $(date -d "${{ steps.date.outputs.time }}" +%s) -lt $(date -d "now - 10 seconds" +%s) ] || [ $(date -d "${{ steps.date.outputs.time }}" +%s) -gt $(date -d "now + 10 seconds" +%s) ]; then
+              echo "TIME is not within 10 seconds of now"
+              exit 1
+          fi

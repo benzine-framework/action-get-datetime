@@ -22,6 +22,7 @@ runs:
           echo "$var=$value" | tee -a "$GITHUB_OUTPUT"
           echo "${var^^}=$value" >> "$GITHUB_ENV"
         done
+
 outputs:
   datetime:
     description: "Current date and time in 'YYYY-MM-DD HH:MM:SS' format"
