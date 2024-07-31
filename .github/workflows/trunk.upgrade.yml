@@ -1,4 +1,4 @@
-name: Trunk Upgrade
+name: "Quality Control: Trunk Upgrade"
 
 permissions: read-all
 
