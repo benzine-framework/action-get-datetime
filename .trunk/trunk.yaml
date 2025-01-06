@@ -23,8 +23,8 @@ lint:
   disabled:
     - git-diff-check
   enabled:
-    - actionlint@1.7.4
-    - checkov@3.2.344
+    - actionlint@1.7.5
+    - checkov@3.2.346
     - markdownlint@0.43.0
     - prettier@3.4.2
     - trivy@0.58.1
@@ -38,4 +38,4 @@ actions:
     - trunk-upgrade-available
 tools:
   enabled:
-    - act@0.2.70
+    - act@0.2.71
