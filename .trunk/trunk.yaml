@@ -24,11 +24,11 @@ lint:
     - git-diff-check
   enabled:
     - actionlint@1.7.7
-    - checkov@3.2.370
+    - checkov@3.2.372
     - markdownlint@0.44.0
     - prettier@3.5.1
     - trivy@0.59.1
-    - trufflehog@3.88.8
+    - trufflehog@3.88.12
     - yamllint@1.35.1
 actions:
   enabled:
